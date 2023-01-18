@@ -11,6 +11,8 @@ int main(void) {
     int product = i * 5;
     printf("%d x 5 = %d\n", i, product);
   }
+
+  return 0;
 }
 
 
