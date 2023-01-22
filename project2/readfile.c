@@ -1,8 +1,8 @@
-#include <stdio.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 int main(int argc, char *argv[])  {
-  int file_descriptor =  open(argv[1], 'O_RDONLY');
+  int file_descriptor =  open(argv[1], O_RDONLY);
   char buffer[2048];
 
   if (file_descriptor == -1) {
@@ -15,5 +15,6 @@ int main(int argc, char *argv[])  {
   }
   
   write(1, buffer, bytes_read);
+  close(file_descriptor);
 
 }
