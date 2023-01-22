@@ -18,7 +18,6 @@ int main(int argc, char *argv[]) {
     for (int i = 1; i < argc; i++) {
       file_descriptor = open(argv[i], O_RDONLY);
       bytes_read = read(file_descriptor, buffer, sizeof(buffer));
-      
       write(1, buffer, bytes_read);
       close(file_descriptor);
     }
