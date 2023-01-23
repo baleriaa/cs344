@@ -11,6 +11,12 @@ int main(int argc, char *argv[]) {
     file_descriptor = 0;
 
     while((bytes_read = read(file_descriptor, buffer, sizeof(buffer))) > 0) {
+      for (int i = 0; i < bytes_read; i++) {
+        while (buffer[i] != '\0') {
+          buffer[i] = toupper(buffer[i]);
+          i++;
+        }
+      }
       write(1, buffer, bytes_read);
     }
     close(file_descriptor);
