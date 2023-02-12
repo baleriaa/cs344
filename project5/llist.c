@@ -28,4 +28,25 @@ int main (int argc, char *argv[]) {
         else {
             print("Invalid command. Please choose either: ih, it, dh, f, or p.");
         }
+    }
 }
+
+struct node *node_alloc(int value) {
+    struct node *node = malloc(sizeof(struct node));
+    node->value = value;
+    node->next = NULL;
+}
+
+void node_free(struct node *n) {
+    free(n);
+}
+
+void llist_insert_head(struct node **head, struct node *n);
+struct node *llist_delete_head(struct node **head);
+void llist_insert_tail(struct node **head, struct node *n);
+void llist_print(struct node *head);
+void llist_free(struct node **head);
+
+
+
+
