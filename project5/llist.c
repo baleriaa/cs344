@@ -30,8 +30,9 @@ int main (int argc, char *argv[]) {
     //         exit(1);
     //     }
     // }
-    // struct node *test_node = node_alloc(45);
-    // struct node *test_node2 = node_alloc(47);
+    struct node *test_node = node_alloc(45);
+    struct node *test_node2 = node_alloc(47);
+    llist_insert_head(&test_node, test_node2);
     llist_print(NULL);
     // node_free(test_node);
     // llist_print(test_node);
@@ -56,14 +57,15 @@ void llist_print(struct node *head) {
     }
     else {
         while (current != NULL) {
-        printf("%d ->", current->value);
+        printf("%d -> ", current->value);
         current = current->next;
         }
     }  
 }
 
 void llist_insert_head(struct node **head, struct node *n) {
-
+    n->next = *head;
+    *head = n;
 }
 
 
