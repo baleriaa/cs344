@@ -30,10 +30,11 @@ int main (int argc, char *argv[]) {
     //         exit(1);
     //     }
     // }
-    struct node *test_node = node_alloc(45);
-    llist_print(test_node);
-    node_free(test_node);
-    llist_print(test_node);
+    // struct node *test_node = node_alloc(45);
+    // struct node *test_node2 = node_alloc(47);
+    llist_print(NULL);
+    // node_free(test_node);
+    // llist_print(test_node);
 
 }
 
@@ -50,18 +51,22 @@ void node_free(struct node *n) {
 
 void llist_print(struct node *head) {
     struct node *current = head;
-    if (current != NULL) {
-        while (current != NULL) {
-            printf("%d ->", current->value);
-            current = current->next;
-        }
+    if (head == NULL) {
+        printf("[empty]");
     }
     else {
-        printf("[empty]");
-    }    
+        while (current != NULL) {
+        printf("%d ->", current->value);
+        current = current->next;
+        }
+    }  
 }
 
-void llist_insert_head(struct node **head, struct node *n);
+void llist_insert_head(struct node **head, struct node *n) {
+
+}
+
+
 struct node *llist_delete_head(struct node **head);
 void llist_insert_tail(struct node **head, struct node *n);
 
