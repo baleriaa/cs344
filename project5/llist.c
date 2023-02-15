@@ -4,6 +4,7 @@
 #include "llist.h"
 
 int main (int argc, char *argv[]) {
+    struct node *head = NULL;
     // for (int i = 1; i < argc; i++) {
     //     if (strcmp(argv[i], "ih") == 0) {
     //         printf("%s", argv[i]);
