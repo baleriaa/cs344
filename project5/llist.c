@@ -59,8 +59,12 @@ void llist_insert_head(struct node **head, struct node *n) {
 }
 
 
-// struct node *llist_delete_head(struct node **head);
-// void llist_insert_tail(struct node **head, struct node *n);
+struct node *llist_delete_head(struct node **head) {
+    struct node *temp = *head; // save head and store in temp
+    *head = (*head)->next; // change original head to be next node
+    return temp; 
+}
+void llist_insert_tail(struct node **head, struct node *n) ;
 
 // void llist_free(struct node **head);
 
