@@ -12,6 +12,7 @@ int main (int argc, char *argv[]) {
         } 
         else if (strcmp(argv[i], "it") == 0) {
             llist_insert_tail(&head, node_alloc(atoi(argv[i+1])));
+            i++;
         } 
         else if (strcmp(argv[i], "dh") == 0) {
             llist_delete_head(&head);
@@ -22,10 +23,10 @@ int main (int argc, char *argv[]) {
         else if (strcmp(argv[i], "p") == 0) {
             llist_print(head);
         }
-        else {
-            printf("Invalid command. Please choose either: ih, it, dh, f, or p.");
-            exit(1);
-        }
+        // else {
+        //     printf("Invalid command. Please choose either: ih, it, dh, f, or p.");
+        //     exit(1);
+        // }
     }
 }
 
