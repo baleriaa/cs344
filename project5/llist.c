@@ -10,15 +10,15 @@ int main (int argc, char *argv[]) {
             llist_insert_head(&head, node_alloc(atoi(argv[i+1])));
             i++;
         } 
-        // else if (strcmp(argv[i], "it") == 0) {
-        //     llist_insert_tail();
-        // } 
-        // else if (strcmp(argv[i], "dh") == 0) {
-        //     llist_delete_head();
-        // }
-        // else if (strcmp(argv[i], "f") == 0) {
-        //     llist_free(&head);
-        // }
+        else if (strcmp(argv[i], "it") == 0) {
+            llist_insert_tail(&head, node_alloc(atoi(argv[i+1])));
+        } 
+        else if (strcmp(argv[i], "dh") == 0) {
+            llist_delete_head(&head);
+        }
+        else if (strcmp(argv[i], "f") == 0) {
+            llist_free(&head);
+        }
         else if (strcmp(argv[i], "p") == 0) {
             llist_print(head);
         }
@@ -46,7 +46,7 @@ void llist_print(struct node *head) {
         printf("[empty]");
     }
     else {
-        while (current != NULL) {
+        while (current != NULL) {  // traverse nodes until last node and print each value
         printf("%d -> ", current->value);
         current = current->next;
         }
@@ -64,9 +64,31 @@ struct node *llist_delete_head(struct node **head) {
     *head = (*head)->next; // change original head to be next node
     return temp; 
 }
-void llist_insert_tail(struct node **head, struct node *n) ;
+void llist_insert_tail(struct node **head, struct node *n) {
+    if (*head == NULL) {    // if no head, set new node as hrad
+        *head = n;
+    } else {
+         struct node *temp = *head;
+        while (temp->next != NULL) {    //traverse nodes until last node
+            temp = temp->next;       
+        }
+        temp->next = n; // set last node's next to be new node
+    }     
+}
 
-// void llist_free(struct node **head);
+void llist_free(struct node **head) {
+    if (*head == NULL) {
+        printf("No nodes.");
+        exit(1);
+    } else {
+        while (*head != NULL) {
+            struct node *temp = *head;  // make a temp node to store head
+            *head = (*head)->next;  // change head to be next node
+            node_free(temp);  // free temp
+        }
+    }
+
+}
 
 
 
