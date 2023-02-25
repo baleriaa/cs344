@@ -10,8 +10,6 @@
 
 struct block *head = NULL;
 
-
-
 void print_data(void)
 {
     struct block *b = head;
@@ -28,24 +26,37 @@ void print_data(void)
         if (b->next != NULL) {
             printf(" -> ");
         }
-
         b = b->next;
     }
-
     printf("\n");
 }
 
+void *myalloc(int size) {
+    if (head == NULL) {
+    head = mmap(NULL, 1024, PROT_READ|PROT_WRITE,
+                MAP_ANON|MAP_PRIVATE, -1, 0);
+    head->next = NULL;
+    head->size = 1024 - PADDED_SIZE(sizeof(struct block));
+    head->in_use = 0;
+    } 
+    struct block *block = head;
+    while (block != NULL) {         // walk the linked list
+        if (block->in_use == 0 && block->size >= size) {    // if the block is not in use and is big enough
+            block->in_use = 1;  // mark it in use
+            return PTR_OFFSET(block, PADDED_SIZE(sizeof(struct block)));    // return a pointer to the user data
+        }
+        block = block->next;
+    }
+    return NULL;    // if no block is found, return NULL
+}
 
+int main(void) {
+    void *p;
 
+    print_data();
+    p = myalloc(16);
+    print_data();
+    p = myalloc(16);
+    printf("%p\n", p);
+}
 
-
-// If this is the first call, mmap() to get some space.
-// At the same time, build a linked-list node inside the new space indicating its size and "in-use" status.
-// Walk the linked list in a loop and look for the first node that is:
-// Not in-use
-// Big enough to hold the requested amount (plus padding)
-// If the block is found:
-// Mark it in-use.
-// Return a pointer to the user data just after the linked list node (plus padding)).
-// If no such block is found:
-// Return NULL
