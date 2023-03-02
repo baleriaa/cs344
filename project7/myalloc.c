@@ -49,6 +49,20 @@ void *myalloc(int size) {
     return NULL;    // if no block is found, return NULL
 }
 
+// void myfree(void *pointer){NULL}
+void split(struct block *current_node, int requested_size) {
+    int head_size = PADDED_SIZE(sizeof(struct block));
+    // If current_node big enough to split:
+    //     Add a new struct block with the remaining unused space
+    //     Wire it into the linked list
+    if (current_node->size > requested_size + head_size) {
+        struct block *new_block = PTR_OFFSET(current_node, head_size + requested_size); 
+        new_block->next = current_node->next;
+        new_block->size = current_node->size - requested_size;
+        new_block->in_use = 1;
+    }
+}
+
 int main(void) {
     void *p;
 
