@@ -41,6 +41,7 @@ void *myalloc(int size) {
     struct block *block = head;
     while (block != NULL) {         // walk the linked list
         if (block->in_use == 0 && block->size >= size) {    // if the block is not in use and is big enough
+            split(block, size);     
             block->in_use = 1;  // mark it in use
             return PTR_OFFSET(block, PADDED_SIZE(sizeof(struct block)));    // return a pointer to the user data
         }
@@ -52,14 +53,13 @@ void *myalloc(int size) {
 // void myfree(void *pointer){NULL}
 void split(struct block *current_node, int requested_size) {
     int head_size = PADDED_SIZE(sizeof(struct block));
-    // If current_node big enough to split:
-    //     Add a new struct block with the remaining unused space
-    //     Wire it into the linked list
-    if (current_node->size > requested_size + head_size) {
-        struct block *new_block = PTR_OFFSET(current_node, head_size + requested_size); 
-        new_block->next = current_node->next;
-        new_block->size = current_node->size - requested_size;
-        new_block->in_use = 1;
+    if (current_node->size > requested_size + head_size) {  // if current_node big enough to split
+        struct block *new_block = PTR_OFFSET(current_node, head_size + requested_size);     // Add a new struct block with the remaining unused space
+        new_block->next = current_node->next;      
+        new_block->size = current_node->size - requested_size;  // set the size of the new block to the remaining size
+        new_block->in_use = 1;  // mark the new block as in use
+        current_node->next = new_block;   //
+        current_node->size = requested_size; 
     }
 }
 
