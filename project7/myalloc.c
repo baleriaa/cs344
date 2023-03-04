@@ -20,7 +20,6 @@ void print_data(void)
     }
 
     while (b != NULL) {
-        // printf("[%p:%d,%s]", b, b->size, b->in_use? "used": "free");
         printf("[%d,%s]", b->size, b->in_use? "used": "free");
         if (b->next != NULL) {
             printf(" -> ");
@@ -45,31 +44,33 @@ void *myalloc(int size) {
             block->in_use = 1;  // mark it in use
             return PTR_OFFSET(block, PADDED_SIZE(sizeof(struct block)));    // return a pointer to the user data
         }
-        block = block->next;
+        block = block->next;  
     }
     return NULL;    // if no block is found, return NULL
 }
 
-// void myfree(void *pointer){NULL}
+// void myfree(void *pointer){
+//     pointer->in_use = 0;    
+// }
 void split(struct block *current_node, int requested_size) {
-    int head_size = PADDED_SIZE(sizeof(struct block));
-    if (current_node->size > requested_size + head_size) {  // if current_node big enough to split
-        struct block *new_block = PTR_OFFSET(current_node, head_size + requested_size);     // Add a new struct block with the remaining unused space
-        new_block->next = current_node->next;      
-        new_block->size = current_node->size - requested_size;  // set the size of the new block to the remaining size
-        new_block->in_use = 1;  // mark the new block as in use
-        current_node->next = new_block;   //
-        current_node->size = requested_size; 
+    int required_size = PADDED_SIZE(requested_size) + PADDED_SIZE(sizeof(struct block));
+    int available_space = current_node->size;
+    if (required_size <= available_space) {
+        struct block *new_block = PTR_OFFSET(current_node, required_size);
+        new_block->next = current_node->next;
+        new_block->size = available_space - required_size;
+        new_block->in_use = 0;
+        current_node->next = new_block;
+        current_node->size = PADDED_SIZE(requested_size);
     }
 }
 
 int main(void) {
-    void *p;
+    myalloc(10); print_data();
+    myalloc(20); print_data();
+    myalloc(30); print_data();
+    myalloc(40); print_data();
+    myalloc(50); print_data();
 
-    print_data();
-    p = myalloc(16);
-    print_data();
-    p = myalloc(16);
-    printf("%p\n", p);
 }
 
