@@ -52,8 +52,12 @@ void *myalloc(int size) {
 void myfree(void *pointer){
     struct block *block = PTR_OFFSET(pointer, -PADDED_SIZE(sizeof(struct block)));  
     block->in_use = 0; 
+    coalesce(block);
 }
 void split(struct block *current_node, int requested_size) {
+    if (current_node->in_use) {
+        return;
+    }
     int required_size = PADDED_SIZE(requested_size) + PADDED_SIZE(sizeof(struct block));
     int available_space = current_node->size;
     if (required_size <= available_space) {
@@ -69,21 +73,26 @@ void split(struct block *current_node, int requested_size) {
 void coalesce(struct block *head_node) {
     struct block *current_node = head_node;
     while (current_node->next != NULL) {
-        if (current_node->in_use == 0 && current_node->next->in_use == 0) {
-            current_node->size = current_node->size + current_node->next->size;
-            current_node->next->next;
+        if (!(current_node->in_use && current_node->next->in_use)) {
+            current_node->size += current_node->next->size;
+            current_node->next = current_node->next->next;
         } 
         else current_node = current_node->next;
     }
 }
 
+
 int main(void) {
-     void *p;
+void *p, *q, *r, *s;
 
-    p = myalloc(512);
-    print_data();
+p = myalloc(10); print_data();
+q = myalloc(20); print_data();
+r = myalloc(30); print_data();
+s = myalloc(40); print_data();
 
-    myfree(p);
-    print_data();
+myfree(q); print_data();
+myfree(p); print_data();
+myfree(s); print_data();
+myfree(r); print_data();
 }
 
