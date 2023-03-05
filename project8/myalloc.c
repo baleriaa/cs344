@@ -66,6 +66,17 @@ void split(struct block *current_node, int requested_size) {
     }
 }
 
+void coalesce(struct node *head_node) {
+// start cur at head
+
+// while cur->next isn't NULL:
+//     if cur is not in_use and next node not in use:
+//         add the next node's region's size to cur's
+//         make cur's next pointer skip the next node
+//     else
+//         move cur to next node
+}
+
 int main(void) {
      void *p;
 
