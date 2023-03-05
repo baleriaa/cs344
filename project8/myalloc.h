@@ -8,3 +8,4 @@ struct block {
 void *myalloc(int size);
 void myfree(void *p);
 void split(struct block *current_node, int requested_size);
+void coalesce(struct block *head_node);
