@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <sys/mman.h>
+#include <stdlib.h>
 #include <string.h>
 #include "myalloc.h"
 
@@ -56,7 +57,7 @@ void myfree(void *pointer){
 }
 void split(struct block *current_node, int requested_size) {
     if (current_node->in_use) {
-        return;
+        exit(1);
     }
     int required_size = PADDED_SIZE(requested_size) + PADDED_SIZE(sizeof(struct block));
     int available_space = current_node->size;
@@ -73,8 +74,8 @@ void split(struct block *current_node, int requested_size) {
 void coalesce(struct block *head_node) {
     struct block *current_node = head_node;
     while (current_node->next != NULL) {
-        if (!(current_node->in_use && current_node->next->in_use)) {
-            current_node->size += current_node->next->size;
+        if (current_node->in_use == 0 && current_node->next->in_use == 0) {
+            current_node->size += current_node->next->size + PADDED_SIZE(sizeof(struct block));
             current_node->next = current_node->next->next;
         } 
         else current_node = current_node->next;
