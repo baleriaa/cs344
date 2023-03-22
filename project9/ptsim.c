@@ -53,10 +53,21 @@ int allocate_page() {
 
 void new_process(int proc_num, int page_count)
 {
-    (void)proc_num;   // remove after implementation
-    (void)page_count; // remove after implementation
+    // // Get the page table page
+    // page_table = AllocatePage()
 
-    // TODO
+    // // Set this process's page table pointer in zero page
+    // mem[64 + proc_num] = page_table
+
+    // // Allocate data pages
+    // For i from 0 to page_count:
+    //     new_page = AllocatePage()
+
+    //     // Set the page table to map virt -> phys
+    //     // Virtual page number is i
+    //     // Physical page number is new_page
+    //     pt_addr = GetAddress(page_table, i)
+    //     mem[pt_addr] = new_page
     
      
 }
