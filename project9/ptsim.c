@@ -41,17 +41,23 @@ unsigned char get_page_table(int proc_num)
     return mem[ptp_addr];
 }
 
-//
-// Allocate pages for a new process
-//
-// This includes the new process page table and page_count data pages.
-//
+int allocate_page() {
+    // For each page_number in the Used Page array in zero page:
+    //     If it's unused (if it's 0):
+    //         mem[page_number] = 1 // mark used
+    //         return the page_number
+
+    // return 0xff  // indicating no free pages
+}
+
 void new_process(int proc_num, int page_count)
 {
     (void)proc_num;   // remove after implementation
     (void)page_count; // remove after implementation
 
     // TODO
+    
+     
 }
 
 //
@@ -121,5 +127,6 @@ int main(int argc, char *argv[])
         }
 
         // TODO: more command line arguments
+        
     }
 }
