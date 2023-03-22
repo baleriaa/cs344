@@ -42,12 +42,13 @@ unsigned char get_page_table(int proc_num)
 }
 
 int allocate_page() {
-    // For each page_number in the Used Page array in zero page:
-    //     If it's unused (if it's 0):
-    //         mem[page_number] = 1 // mark used
-    //         return the page_number
-
-    // return 0xff  // indicating no free pages
+    for (int i = 0; i < PAGE_COUNT; i++) {
+        if (mem[i] == 0) {
+            mem[i] = 1;
+            return i;
+        }
+        return 0xff;
+    }
 }
 
 void new_process(int proc_num, int page_count)
