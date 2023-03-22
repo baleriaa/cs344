@@ -52,21 +52,21 @@ int allocate_page() {
     return 0xff;
 }
 
-void new_process(int proc_num, int page_count)
-{
-//     If the initial page table allocation fails (due to out-of-memory), the function should print:
-
-//     printf("OOM: proc %d: page table\n", proc_num);
-// and return.
-
-// If any of the subsequent page allocations fail, it should print:
-
-//     printf("OOM: proc %d: data page\n", proc_num);
+void new_process(int proc_num, int page_count) {
     int page_table = allocate_page();
+
+    if (page_table == 0xff) {
+        printf("OOM: proc %d: page table\n", proc_num);
+        return;
+    }
     mem[64 + proc_num] = page_table;
     
     for (int i = 0; i < page_count; i++) {
         int new_page = allocate_page();
+        if (new_page == 0xff) {
+            printf("OOM: proc %d: data page\n", proc_num);
+            return;
+        }
         int pt_addr = get_address(page_table, i);
         mem[pt_addr] = new_page;
     } 
